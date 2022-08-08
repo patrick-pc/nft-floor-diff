@@ -1,6 +1,46 @@
+import { useEffect, useState } from 'react'
+import axios from 'axios'
 import Head from 'next/head'
+import { ethers } from 'ethers'
 
 export default function Home() {
+  const [nfts, setNfts] = useState([])
+
+  useEffect(() => {
+    getTopCollections()
+  }, [])
+
+  const getTopCollections = async () => {
+    console.log('Fetching...')
+    const res = await axios.get(
+      'https://api.reservoir.tools/collections/v4?includeTopBid=false&limit=20&sortBy=1DayVolume'
+    )
+    const top20 = res.data.collections
+    // setNfts(top20)
+
+    const result = await Promise.all(
+      top20.map(async (nft) => {
+        const floors = await axios.get(
+          `https://eth-mainnet.g.alchemy.com/nft/v2/${process.env.NEXT_PUBLIC_ALCHEMY_API_KEY}/getFloorPrice?contractAddress=${nft.id}`
+        )
+        nft.floors = floors.data
+        nft.floors.x2y2 = { floorPrice: null }
+        return nft
+      })
+    )
+    setNfts(result)
+    // const result = await Promise.all(updatedResult)
+    console.log(result)
+
+    for (const nft of top20) {
+      const x2y2 = await axios.get(`/api/x2y2?contractAddress=${nft.id}`)
+      nft.floors.x2y2 = {
+        floorPrice: x2y2.data && ethers.utils.formatEther(x2y2.data),
+      }
+    }
+    setNfts(top20)
+  }
+
   return (
     <div>
       <Head>
@@ -9,7 +49,20 @@ export default function Home() {
         <link rel='icon' href='/favicon.ico' />
       </Head>
 
-      <main>gm</main>
+      <main>
+        {nfts.map((nft) => (
+          <div key={nft.id}>
+            <h1>{nft.name}</h1>
+            <p>{nft.floors.openSea.floorPrice}</p>
+            <p>{nft.floors.looksRare.floorPrice}</p>
+            <p>
+              {nft.floors.x2y2.floorPrice
+                ? nft.floors.x2y2.floorPrice
+                : 'Loading...'}
+            </p>
+          </div>
+        ))}
+      </main>
     </div>
   )
 }
