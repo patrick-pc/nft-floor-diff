@@ -81,6 +81,7 @@ const Home = () => {
             onChange={debounce((e) => searchCollection(e.target.value), 500)}
             onBlur={handleBlur}
             ref={inputRef}
+            className='input'
           />
           <div id='items'>
             {searchList.map((collection) => (
