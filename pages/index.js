@@ -1,13 +1,15 @@
+import { useRouter } from 'next/router'
 import { useEffect, useState, useRef } from 'react'
 import { ethers } from 'ethers'
 import axios from 'axios'
 import debounce from 'lodash.debounce'
 import Head from 'next/head'
 
-export default function Home() {
-  const [nfts, setNfts] = useState([])
-  const [datalist, setDatalist] = useState([])
+const Home = () => {
+  const router = useRouter()
   const inputRef = useRef(null)
+  const [collections, setCollections] = useState([])
+  const [searchList, setSearchList] = useState([])
 
   useEffect(() => {
     getTopCollections()
@@ -19,9 +21,8 @@ export default function Home() {
       'https://api.reservoir.tools/collections/v4?includeTopBid=false&limit=20&sortBy=1DayVolume'
     )
     const top20 = res.data.collections
-    // setNfts(top20)
 
-    const result = await Promise.all(
+    const top20WithFloors = await Promise.all(
       top20.map(async (nft) => {
         const floors = await axios.get(
           `https://eth-mainnet.g.alchemy.com/nft/v2/${process.env.NEXT_PUBLIC_ALCHEMY_API_KEY}/getFloorPrice?contractAddress=${nft.id}`
@@ -31,8 +32,7 @@ export default function Home() {
         return nft
       })
     )
-    setNfts(result)
-    console.log(result)
+    setCollections(top20WithFloors)
 
     for (const nft of top20) {
       const x2y2 = await axios.get(`/api/x2y2?contractAddress=${nft.id}`)
@@ -40,30 +40,29 @@ export default function Home() {
         floorPrice: x2y2.data && ethers.utils.formatEther(x2y2.data),
       }
     }
-    setNfts(top20)
+    setCollections(top20)
   }
 
   const searchCollection = async (name) => {
     if (!name) {
-      setDatalist([])
+      setSearchList([])
       return
     }
     const res = await axios.get(
       `https://api.reservoir.tools/search/collections/v1?name=${name}&limit=5`
     )
-    setDatalist(res.data.collections)
-    console.log(res.data.collections)
+    setSearchList(res.data.collections)
   }
 
   const handleClick = (collection) => {
-    console.log(collection)
+    router.push(`/${collection.collectionId}`)
     inputRef.current.value = ''
-    setDatalist([])
+    setSearchList([])
   }
 
   const handleBlur = () => {
     inputRef.current.value = ''
-    setDatalist([])
+    setSearchList([])
   }
 
   return (
@@ -84,7 +83,7 @@ export default function Home() {
             ref={inputRef}
           />
           <div id='items'>
-            {datalist.map((collection) => (
+            {searchList.map((collection) => (
               <div
                 key={collection.collectionId}
                 onMouseDown={() => handleClick(collection)}
@@ -100,8 +99,9 @@ export default function Home() {
           </div>
         </div>
 
-        {nfts.map((nft) => (
-          <div key={nft.id}>
+        {collections.map((nft) => (
+          <div key={nft.id} onClick={() => router.push(`/${nft.id}`)}>
+            <img src={nft.image} style={{ width: '100px', height: '100px' }} />
             <h1>{nft.name}</h1>
             <p>{nft.floors.openSea.floorPrice}</p>
             <p>{nft.floors.looksRare.floorPrice}</p>
@@ -116,3 +116,5 @@ export default function Home() {
     </div>
   )
 }
+
+export default Home
