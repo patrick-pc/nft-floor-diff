@@ -40,6 +40,7 @@ const Home = () => {
         floorPrice: x2y2.data && ethers.utils.formatEther(x2y2.data),
       }
     }
+    console.log(top20)
     setCollections(top20)
   }
 
@@ -100,19 +101,55 @@ const Home = () => {
           </div>
         </div>
 
-        {collections.map((nft) => (
-          <div key={nft.id} onClick={() => router.push(`/${nft.id}`)}>
-            <img src={nft.image} style={{ width: '100px', height: '100px' }} />
-            <h1>{nft.name}</h1>
-            <p>{nft.floors.openSea.floorPrice}</p>
-            <p>{nft.floors.looksRare.floorPrice}</p>
-            <p>
-              {nft.floors.x2y2.floorPrice
-                ? nft.floors.x2y2.floorPrice
-                : 'Loading...'}
-            </p>
+        <div className='container mx-auto'>
+          <div className='flex flex-wrap items-center justify-center gap-8'>
+            {collections.map((nft) => (
+              <div
+                className='flex flex-col items-center w-80 text-white border border-gray-800 rounded-box cursor-pointer gap-4 p-4'
+                key={nft.id}
+                onClick={() => router.push(`/${nft.id}`)}
+              >
+                <div className='flex items-center justify-center w-full gap-4'>
+                  <img
+                    className='h-32 w-32 mask mask-squircle'
+                    src={nft.sampleImages[0]}
+                  />
+                  <div className='flex flex-col text-lg font-thin w-32 gap-2'>
+                    <div className='flex items-center justify-between gap-4'>
+                      <span>{nft.floors.openSea.floorPrice}</span>
+                      <div className='flex items-center justify-center border border-gray-800 rounded-full p-1.5'>
+                        <img className='h-3 w-3' src='/img/opensea-mono.png' />
+                      </div>
+                    </div>
+
+                    <div className='flex items-center justify-between gap-3'>
+                      <span>{nft.floors.looksRare.floorPrice}</span>
+                      <div className='flex items-center justify-center border border-gray-800 rounded-full p-1.5'>
+                        <img
+                          className='h-3 w-3'
+                          src='/img/looksrare-mono.png'
+                        />
+                      </div>
+                    </div>
+
+                    <div className='flex items-center justify-between gap-3'>
+                      <span>
+                        {nft.floors.x2y2.floorPrice
+                          ? nft.floors.x2y2.floorPrice
+                          : 'Loading...'}
+                      </span>
+                      <div className='flex items-center justify-center border border-gray-800 rounded-full p-1.5'>
+                        <img className='h-3 w-3' src='/img/x2y2-mono.png' />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <p className='text-xl font-medium'>{nft.name}</p>
+              </div>
+            ))}
           </div>
-        ))}
+        </div>
       </main>
     </div>
   )
