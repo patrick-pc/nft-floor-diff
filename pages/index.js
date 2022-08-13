@@ -60,7 +60,7 @@ const Home = () => {
                 <div className='flex items-center justify-center w-full gap-4'>
                   <img
                     className='h-32 w-32 mask mask-squircle'
-                    src={nft.sampleImages[0]}
+                    src={nft.sampleImages[0] || '/img/media-not-available.png'}
                   />
                   <div className='flex flex-col text-lg font-thin w-32 gap-2'>
                     <div className='flex items-center justify-between gap-4'>

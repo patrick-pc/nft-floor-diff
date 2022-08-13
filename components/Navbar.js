@@ -83,7 +83,10 @@ const Navbar = () => {
                 key={collection.collectionId}
                 onMouseDown={() => handleClick(collection)}
               >
-                <img className='h-10 w-10' src={collection.image} />
+                <img
+                  className='h-10 w-10'
+                  src={collection.image || '/img/media-not-available.png'}
+                />
                 <p className='text-sm'>{collection.name}</p>
               </div>
             ))}
