@@ -1,10 +1,11 @@
+import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { ethers } from 'ethers'
 import axios from 'axios'
 import Head from 'next/head'
-import Navbar from '../components/Navbar'
 
 const Home = () => {
+  const router = useRouter()
   const [collections, setCollections] = useState([])
 
   useEffect(() => {
@@ -36,6 +37,7 @@ const Home = () => {
       }
     }
     setCollections(top20)
+    console.log(top20)
   }
 
   return (
@@ -48,11 +50,10 @@ const Home = () => {
 
       <main>
         <div className='container mx-auto'>
-          <Navbar />
-          <div className='flex flex-wrap items-center justify-center gap-8'>
+          <div className='flex flex-wrap items-center justify-center gap-8 mx-4'>
             {collections.map((nft) => (
               <div
-                className='flex flex-col items-center w-80 text-white border border-zinc-800 rounded-box cursor-pointer gap-4 p-4'
+                className='flex flex-col items-center w-80 text-white border border-zinc-800 rounded-box cursor-pointer transition duration-300 ease-in-out transform hover:scale-105 gap-4 p-4'
                 key={nft.id}
                 onClick={() => router.push(`/${nft.id}`)}
               >
