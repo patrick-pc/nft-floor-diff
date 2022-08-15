@@ -8,7 +8,10 @@ function MyApp({ Component, pageProps }) {
     <>
       <Head>
         <title>NFT Floor Diff</title>
-        <meta name='description' content='NFT Floor Difference' />
+        <meta
+          name='description'
+          content='NFT marketplace floor price difference aggregator.'
+        />
         <meta
           name='viewport'
           content='width=device-width, initial-scale=1, maximum-scale=1'
