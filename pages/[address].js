@@ -59,7 +59,7 @@ const Collection = () => {
     <FadeIn>
       <div className='container mx-auto'>
         <div className='flex flex-col items-center justify-center gap-8 mx-4'>
-          <div className='flex items-center text-white gap-8 p-4'>
+          <div className='flex flex-col md:flex-row items-center justify-center text-center text-white gap-8 p-4'>
             <img
               className='h-40 w-40 mask mask-squircle'
               src={

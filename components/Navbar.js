@@ -76,7 +76,7 @@ const Navbar = () => {
             </kbd>
           </div>
 
-          <div className='flex flex-col items-center text-white bg-zinc-900/30 backdrop-blur-3xl absolute top-11 left-0 w-60 z-50'>
+          <div className='flex flex-col items-center text-white bg-zinc-900 absolute top-11 left-0 w-60 z-50'>
             {searchList.map((collection) => (
               <div
                 className='flex items-center border border-zinc-800 hover:bg-zinc-800 cursor-pointer w-full gap-2 p-2'
