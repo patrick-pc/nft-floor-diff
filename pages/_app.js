@@ -9,6 +9,10 @@ function MyApp({ Component, pageProps }) {
       <Head>
         <title>NFT Floor Diff</title>
         <meta name='description' content='NFT Floor Difference' />
+        <meta
+          name='viewport'
+          content='width=device-width, initial-scale=1, maximum-scale=1'
+        />
         <link rel='icon' href='/img/logo.png' />
       </Head>
       <div className='min-h-screen w-full'>
