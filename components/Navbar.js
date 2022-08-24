@@ -35,7 +35,7 @@ const Navbar = () => {
   }
 
   const handleClick = (collection) => {
-    router.push(`/${collection.collectionId}`)
+    router.push(`/${collection.contract}`)
     inputRef.current.value = ''
     setSearchList([])
   }
@@ -80,7 +80,7 @@ const Navbar = () => {
             {searchList.map((collection) => (
               <div
                 className='flex items-center border border-zinc-800 hover:bg-zinc-800 cursor-pointer w-full gap-2 p-2'
-                key={collection.collectionId}
+                key={collection.contract}
                 onMouseDown={() => handleClick(collection)}
               >
                 <img

@@ -23,6 +23,8 @@ const Collection = () => {
     )
     const col = res.data.collection
 
+    if (!col) return
+
     const floors = await axios.get(
       `https://eth-mainnet.g.alchemy.com/nft/v2/${process.env.NEXT_PUBLIC_ALCHEMY_API_KEY}/getFloorPrice?contractAddress=${address}`
     )
@@ -104,7 +106,7 @@ const Collection = () => {
 
           <div className='flex flex-col md:flex-row items-stretch justify-center gap-8'>
             <div className='flex flex-col items-center justify-center w-80 text-white bg-black border border-zinc-800 rounded-box gap-4 p-4'>
-              <h2 className='font-light'>Floor Difference</h2>
+              <h2 className='font-light'>Floor Price</h2>
 
               <div className='flex items-center text-center text-lg font-light tracking-wide w-full'>
                 <a

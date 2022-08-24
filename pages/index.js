@@ -24,7 +24,7 @@ const Home = () => {
     const top20WithFloors = await Promise.all(
       top20.map(async (nft) => {
         const floors = await axios.get(
-          `https://eth-mainnet.g.alchemy.com/nft/v2/${process.env.NEXT_PUBLIC_ALCHEMY_API_KEY}/getFloorPrice?contractAddress=${nft.id}`
+          `https://eth-mainnet.g.alchemy.com/nft/v2/${process.env.NEXT_PUBLIC_ALCHEMY_API_KEY}/getFloorPrice?contractAddress=${nft.primaryContract}`
         )
         nft.floors = {}
         nft.floors.openSea = {
@@ -41,7 +41,9 @@ const Home = () => {
     setLoading(false)
 
     for (const nft of top20WithFloors) {
-      const x2y2 = await axios.get(`/api/x2y2?contractAddress=${nft.id}`)
+      const x2y2 = await axios.get(
+        `/api/x2y2?contractAddress=${nft.primaryContract}`
+      )
       nft.floors.x2y2 = {
         floorPrice: x2y2.data && ethers.utils.formatEther(x2y2.data),
       }
@@ -70,7 +72,7 @@ const Home = () => {
             <div
               className='flex flex-col items-center justify-center w-80 text-white bg-black border border-zinc-800 rounded-box cursor-pointer transition duration-300 ease-in-out transform hover:scale-105 gap-4 p-4'
               key={nft.id}
-              onClick={() => router.push(`/${nft.id}`)}
+              onClick={() => router.push(`/${nft.primaryContract}`)}
             >
               <div className='flex items-center justify-center w-full gap-4'>
                 <img
