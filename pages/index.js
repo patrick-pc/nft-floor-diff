@@ -20,6 +20,12 @@ const Home = () => {
       'https://api.reservoir.tools/collections/v4?includeTopBid=false&limit=20&sortBy=1DayVolume'
     )
     const top20 = res.data.collections
+    top20.find((nft, i) => {
+      if (nft.slug === 'unidentified-contract') {
+        top20.splice(i, 1)
+        return true
+      }
+    })
 
     const top20WithFloors = await Promise.all(
       top20.map(async (nft) => {
@@ -81,11 +87,18 @@ const Home = () => {
                 />
                 <div className='flex flex-col text-lg font-light tracking-wide w-32 gap-2'>
                   <div className='flex items-center justify-between gap-4'>
-                    {cutNumber(
-                      nft.floors.openSea.floorPrice.toLocaleString('fullwide', {
-                        useGrouping: false,
-                      }),
-                      3
+                    {nft.floors.looksRare.floorPrice ? (
+                      cutNumber(
+                        nft.floors.openSea.floorPrice.toLocaleString(
+                          'fullwide',
+                          {
+                            useGrouping: false,
+                          }
+                        ),
+                        3
+                      )
+                    ) : (
+                      <Ring size={18} color='#FFFFFF' />
                     )}
                     <div className='flex items-center justify-center border border-zinc-800 rounded-full p-1.5'>
                       <img className='h-3 w-3' src='/img/opensea-mono.png' />
@@ -93,12 +106,16 @@ const Home = () => {
                   </div>
 
                   <div className='flex items-center justify-between gap-3'>
-                    {cutNumber(
-                      nft.floors.looksRare.floorPrice.toLocaleString(
-                        'fullwide',
-                        { useGrouping: false }
-                      ),
-                      3
+                    {nft.floors.looksRare.floorPrice ? (
+                      cutNumber(
+                        nft.floors.looksRare.floorPrice.toLocaleString(
+                          'fullwide',
+                          { useGrouping: false }
+                        ),
+                        3
+                      )
+                    ) : (
+                      <Ring size={18} color='#FFFFFF' />
                     )}
                     <div className='flex items-center justify-center border border-zinc-800 rounded-full p-1.5'>
                       <img className='h-3 w-3' src='/img/looksrare-mono.png' />
