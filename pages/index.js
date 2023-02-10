@@ -34,10 +34,10 @@ const Home = () => {
         )
         nft.floors = {}
         nft.floors.openSea = {
-          floorPrice: floors.data.openSea.floorPrice || nft.floorAskPrice,
+          floorPrice: floors.data.openSea.floorPrice || 0,
         }
         nft.floors.looksRare = {
-          floorPrice: floors.data.looksRare.floorPrice || nft.floorAskPrice,
+          floorPrice: floors.data.looksRare.floorPrice || 0,
         }
         nft.floors.x2y2 = { floorPrice: null }
         return nft
@@ -51,7 +51,7 @@ const Home = () => {
         `/api/x2y2?contractAddress=${nft.primaryContract}`
       )
       nft.floors.x2y2 = {
-        floorPrice: x2y2.data && ethers.utils.formatEther(x2y2.data),
+        floorPrice: x2y2.data ? ethers.utils.formatEther(x2y2.data) : 0,
       }
     }
     setCollections(top20)
@@ -87,7 +87,7 @@ const Home = () => {
                 />
                 <div className='flex flex-col text-lg font-light tracking-wide w-32 gap-2'>
                   <div className='flex items-center justify-between gap-4'>
-                    {nft.floors.looksRare.floorPrice ? (
+                    {nft.floors.openSea.floorPrice ? (
                       cutNumber(
                         nft.floors.openSea.floorPrice.toLocaleString(
                           'fullwide',
