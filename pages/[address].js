@@ -30,15 +30,15 @@ const Collection = () => {
     )
     col.floors = {}
     col.floors.openSea = {
-      floorPrice: floors.data.openSea.floorPrice || col.floorAsk.price,
+      floorPrice: floors.data.openSea.floorPrice || 0,
     }
     col.floors.looksRare = {
-      floorPrice: floors.data.looksRare.floorPrice || col.floorAsk.price,
+      floorPrice: floors.data.looksRare.floorPrice || 0,
     }
 
     const x2y2 = await axios.get(`/api/x2y2?contractAddress=${address}`)
     col.floors.x2y2 = {
-      floorPrice: x2y2.data && ethers.utils.formatEther(x2y2.data),
+      floorPrice: x2y2.data ? ethers.utils.formatEther(x2y2.data) : 0,
     }
     setCollection(col)
     setLoading(false)
